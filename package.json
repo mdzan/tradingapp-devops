@@ -1,0 +1,12 @@
+{
+  "name": "trade-journal-pro",
+  "version": "1.0.0",
+  "description": "DevOps Project",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "jest": "^29.7.0"
+  }
+}
