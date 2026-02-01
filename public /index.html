@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TradeJournal Pro 2026</title>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Link to your separate CSS file -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <header class="header">
+        <div class="logo"><i class="fa-solid fa-chart-line"></i> TradeJournal 2026</div>
+        <div style="color: var(--profit); font-size: 0.9rem;"><i class="fa-solid fa-wifi"></i> Live API</div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div style="color:var(--text-muted)">Total P&L (SGD)</div>
+            <div class="stat-value" id="total-pnl">$0.00</div>
+        </div>
+        <div class="stat-card">
+            <div style="color:var(--text-muted)">Win Rate</div>
+            <div class="stat-value" id="win-rate">0%</div>
+        </div>
+        <div class="stat-card">
+            <div style="color:var(--text-muted)">Best Trade</div>
+            <div class="stat-value text-profit" id="best-trade">$0.00</div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <!-- LEFT: TOOLS -->
+        <div class="left-col">
+            <div class="card">
+                <div class="card-header"><div class="card-title"><i class="fa-solid fa-calculator"></i> Quick Convert</div></div>
+                <div class="form-group"><label>Amount</label><input type="number" id="qc-amount" placeholder="100"></div>
+                <div class="form-group" style="display:flex; gap:10px;">
+                    <select id="qc-from"><option value="USD">USD</option><option value="EUR">EUR</option><option value="JPY">JPY</option></select>
+                    <span style="align-self:center;">➜</span>
+                    <select id="qc-to"><option value="SGD">SGD</option><option value="MYR">MYR</option></select>
+                </div>
+                <button class="btn btn-primary" onclick="runQuickConvert()">Calculate</button>
+                <div style="margin-top:10px; font-weight:bold; color:var(--profit); text-align:center;" id="qc-result"></div>
+            </div>
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-circle-info"></i> Instructions</div>
+                <p style="color:var(--text-muted); margin-top:10px; font-size:0.9rem;">Click any date on the calendar to log a trade entry.</p>
+            </div>
+        </div>
+
+        <!-- RIGHT: CALENDAR -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title"><i class="fa-regular fa-calendar"></i> Journal</div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                    <button class="btn" style="width:30px; background:var(--bg-hover);" onclick="changeMonth(-1)"><</button>
+                    <div id="current-month-year" style="font-weight:bold; width:120px; text-align:center;">...</div>
+                    <button class="btn" style="width:30px; background:var(--bg-hover);" onclick="changeMonth(1)">></button>
+                </div>
+            </div>
+            <div class="calendar-grid">
+                <div class="weekday-label">Sun</div><div class="weekday-label">Mon</div><div class="weekday-label">Tue</div><div class="weekday-label">Wed</div><div class="weekday-label">Thu</div><div class="weekday-label">Fri</div><div class="weekday-label">Sat</div>
+            </div>
+            <div class="calendar-grid" id="calendar-days"></div>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="journal-modal">
+    <div class="modal-content">
+        <button class="close-modal" onclick="closeModal()">&times;</button>
+        <h3 style="margin-bottom:20px;">Log Trade</h3>
+        <form id="trade-form">
+            <input type="date" id="trade-date" readonly style="margin-bottom:10px; opacity:0.6;">
+            <div class="form-group">
+                <label>Currency</label>
+                <select id="currency-select">
+                    <option value="USD">USD</option><option value="EUR">EUR</option><option value="GBP">GBP</option>
+                    <option value="JPY">JPY</option><option value="SGD">SGD</option><option value="AUD">AUD</option>
+                </select>
+            </div>
+            <div class="form-group"><label>P&L Amount</label><input type="number" id="pnl-amount" placeholder="-50 or 150" required></div>
+            <button type="submit" class="btn btn-primary">Save Entry</button>
+        </form>
+    </div>
+</div>
+
+<div class="ticker-wrap"><marquee id="rates-marquee">Loading Markets...</marquee></div>
+
+<!-- Link to your separate JS file -->
+<script src="script.js"></script>
+</body>
+</html>
