@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  # This is your Trading Journal App
+  frontend:
+    # Use the image name you created in your Dockerfile
+    image: trade-journal:latest
+    ports:
+      - "80:80"
+    networks:
+      - trade_net
+    deploy:
+      # SCALABILITY: Run 3 instances for high traffic
+      replicas: 3
+      restart_policy:
+        condition: on-failure
+      # AVAILABILITY: Zero-downtime rolling updates
+      update_config:
+        parallelism: 1
+        delay: 10s
+        order: start-first
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 50M
+
+networks:
+  trade_net:
+    driver: overlay
