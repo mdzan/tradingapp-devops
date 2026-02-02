@@ -2,11 +2,12 @@
 const API_URL = 'https://open.er-api.com/v6/latest/USD';
 let currentRates = { "USD":1, "SGD":1.35, "EUR":0.92, "JPY":150.2, "MYR":4.7 };
 let trades = JSON.parse(localStorage.getItem('trade_journal')) || [];
-let viewDate = new Date(2026, new Date().getMonth(), 1); // Default to current month in 2026
+let viewDate = new Date(2026, new Date().getMonth(), 1);
 
 // INITIALIZATION
 document.addEventListener('DOMContentLoaded', async () => {
-    renderCalendar(); updateStats();
+    renderCalendar(); 
+    updateStats();
     try {
         const res = await fetch(API_URL);
         const data = await res.json();
@@ -35,8 +36,11 @@ function changeMonth(step) {
 }
 
 function renderCalendar() {
-    const grid = document.getElementById('calendar-days'); grid.innerHTML = '';
-    const year = viewDate.getFullYear(); const month = viewDate.getMonth();
+    const grid = document.getElementById('calendar-days'); 
+    grid.innerHTML = '';
+    const year = viewDate.getFullYear(); 
+    const month = viewDate.getMonth();
+    
     document.getElementById('current-month-year').innerText = viewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
     
     const firstDay = new Date(year, month, 1).getDay();
@@ -45,7 +49,8 @@ function renderCalendar() {
     for(let i=0; i<firstDay; i++) grid.appendChild(document.createElement('div'));
 
     for(let i=1; i<=daysInMonth; i++) {
-        const dayDiv = document.createElement('div'); dayDiv.className = 'day-cell';
+        const dayDiv = document.createElement('div'); 
+        dayDiv.className = 'day-cell';
         const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
         const dayTrades = trades.filter(t => t.date === dateStr);
         
@@ -56,6 +61,13 @@ function renderCalendar() {
         }
         dayDiv.innerHTML = html;
         dayDiv.onclick = () => openModal(dateStr);
+        
+        // Highlight Today
+        const now = new Date();
+        if(year === now.getFullYear() && month === now.getMonth() && i === now.getDate()) {
+            dayDiv.classList.add('today');
+        }
+        
         grid.appendChild(dayDiv);
     }
 }
@@ -88,4 +100,9 @@ function updateStats() {
     document.getElementById('total-pnl').className = `stat-value ${total>=0?'text-profit':'text-loss'}`;
     document.getElementById('win-rate').innerText = trades.length ? Math.round((wins/trades.length)*100)+'%' : '0%';
     document.getElementById('best-trade').innerText = `$${best.toFixed(2)}`;
+}
+
+// Export for Unit Tests
+if (typeof module !== 'undefined') {
+    module.exports = { runQuickConvert };
 }
