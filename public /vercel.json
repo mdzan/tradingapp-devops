@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "public": true,
+  "name": "trading-journal-pro",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/public/$1" }
+  ],
+  "cleanUrls": true
+}
